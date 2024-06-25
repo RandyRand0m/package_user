@@ -12,9 +12,7 @@ class ListItemInitial extends ListItemState {}
 
 class ListItemLoaded extends ListItemState {
   final ListItem item;
-
   const ListItemLoaded(this.item);
-
   @override
   List<Object> get props => [item];
 }

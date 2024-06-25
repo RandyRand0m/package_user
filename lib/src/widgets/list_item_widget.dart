@@ -6,7 +6,6 @@ import '../models/list_item.dart';
 
 class ListItemWidget extends StatelessWidget {
   final ListItem item;
-
   const ListItemWidget({Key? key, required this.item}) : super(key: key);
 
   Color _getBackgroundColor(String status) {

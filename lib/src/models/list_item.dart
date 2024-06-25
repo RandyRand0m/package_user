@@ -19,7 +19,6 @@ class ListItem {
     required this.status,
   });
 
-
   @override
   List<Object> get props => [id, title, trainer, date, time, participantsCount, status];
 }
