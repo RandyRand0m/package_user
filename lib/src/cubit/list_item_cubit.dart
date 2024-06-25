@@ -8,4 +8,5 @@ class ListItemCubit extends Cubit<ListItemState> {
   void loadListItem(ListItem item) {
     emit(ListItemLoaded(item));
   }
+  
 }
