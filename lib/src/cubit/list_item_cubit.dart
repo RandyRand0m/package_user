@@ -8,4 +8,14 @@ class ListItemCubit extends Cubit<ListItemState> {
   void loadListItem(ListItem item) {
     emit(ListItemLoaded(item));
   }
+
+  void toggleEnrollment() {
+    if (state is ListItemLoaded) {
+      final currentState = state as ListItemLoaded;
+      final updatedItem = currentState.item.copyWith(
+        status: !currentState.item.status,
+      );
+      emit(ListItemLoaded(updatedItem));
+    }
+  }
 }
