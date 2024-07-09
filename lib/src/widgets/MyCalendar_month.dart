@@ -3,16 +3,16 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_user/package_user.dart';
 
-class MyCalendar extends StatefulWidget {
+class MyCalendar_month extends StatefulWidget {
   final List<ListItem> listItems;
 
-  const MyCalendar({super.key, required this.listItems});
+  const MyCalendar_month({super.key, required this.listItems});
 
   @override
   _MyCalendarState createState() => _MyCalendarState();
 }
 
-class _MyCalendarState extends State<MyCalendar> {
+class _MyCalendarState extends State<MyCalendar_month> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay = DateTime.now();
 
@@ -39,7 +39,7 @@ class _MyCalendarState extends State<MyCalendar> {
               });
             });
           },
-          calendarFormat: CalendarFormat.week,
+          calendarFormat: CalendarFormat.month,
           startingDayOfWeek: StartingDayOfWeek.monday,
           headerStyle: const HeaderStyle(
             formatButtonVisible: false,
