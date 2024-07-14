@@ -3,7 +3,6 @@ import 'package:barcode/barcode.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
 
-
 class BarcodeGeneratorPage extends StatefulWidget {
   final String jsonData;
 
@@ -49,9 +48,9 @@ class _BarcodeGeneratorPageState extends State<BarcodeGeneratorPage> {
         appBar: AppBar(
           title: Text('Клубная карта'),
         ),
-        body: Center(
+        body: const Center(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: Text(
               'Invalid barcode type',
               style: TextStyle(color: Colors.red, fontSize: 24),
@@ -70,7 +69,7 @@ class _BarcodeGeneratorPageState extends State<BarcodeGeneratorPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Клубная карта'),
+        title: const Text('Клубная карта'),
       ),
       body: Center(
         child: Padding(
@@ -94,13 +93,13 @@ class ClubCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color.fromARGB(255, 186, 135, 252),
+      color: const Color.fromARGB(255, 186, 135, 252),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      margin: EdgeInsets.all(0),
+      margin: const EdgeInsets.all(0),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -110,41 +109,35 @@ class ClubCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               padding: EdgeInsets.all(8.0),
-              child: SvgPicture.string(
-                barcodeSvg,
-                width: 200,
-                height: 80,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: SvgPicture.string(
+                      barcodeSvg,
+                      width: double.infinity,
+                      height: 80,
+                    ),
+                  ),
+                  SizedBox(width: 10)
+                ],
               ),
             ),
             SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 214, 181, 255),
                 borderRadius: BorderRadius.circular(10.0),
-                
               ),
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+              padding: EdgeInsets.all(8.0),
+              child: const Row(
                 children: [
-                  Text(
-                    'Клубная карта',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 214, 181, 255),
-                      borderRadius: BorderRadius.circular(10.0),
-                      
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  Expanded(
                     child: Text(
-                      cardNumber,
-                      style: TextStyle(fontSize: 14, color: Colors.black),
+                      'Клубная карта',
+                      style: TextStyle(fontSize: 18, color: Colors.black),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 20),
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 18,
