@@ -27,7 +27,7 @@ Widget build(BuildContext context) {
                   child: Container(
                     height: 22,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: const Color.fromARGB(255, 241, 237, 245),
                       borderRadius: BorderRadius.circular(21),
                     ),
                   ),
@@ -60,9 +60,9 @@ Widget build(BuildContext context) {
             const SizedBox(height: 8),
             Row(
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey[300],
-                  radius: 16,
+                const CircleAvatar(
+                  backgroundColor: Color.fromARGB(255, 241, 237, 245),
+                  radius: 24,
                 ),
                 const SizedBox(width: 12), // Отступ между картинкой и текстом
                 Column(
@@ -72,7 +72,7 @@ Widget build(BuildContext context) {
                       width: 100,
                       height: 18,
                       decoration: BoxDecoration(
-                        color: Colors.grey[300],
+                        color: const Color.fromARGB(255, 241, 237, 245),
                         borderRadius: BorderRadius.circular(21),
                       ),
                     ),

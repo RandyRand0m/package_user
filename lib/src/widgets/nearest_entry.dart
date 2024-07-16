@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/list_item_cubit.dart';
 import '../cubit/list_item_state.dart';
 import '../models/list_item.dart';
-import 'package:intl/intl.dart'; // Для работы с датами
+import 'package:intl/intl.dart'; 
 
 class NearestEntry extends StatelessWidget {
   final ListItem item;
@@ -11,20 +11,20 @@ class NearestEntry extends StatelessWidget {
   const NearestEntry({Key? key, required this.item}) : super(key: key);
 
   Color _getBackgroundColor(bool isEnrolled) {
-    return isEnrolled ? Color.fromARGB(255, 186, 135, 252) : Color.fromRGBO(255, 255, 255, 1);
+    return isEnrolled ? const Color.fromARGB(255, 186, 135, 252) : const Color.fromRGBO(255, 255, 255, 1);
   }
 
   Color _getStatusColor(String status) {
     if (status == 'Сегодня' || status == 'Завтра') {
-      return Color.fromARGB(255, 214, 181, 255);
+      return const Color.fromARGB(255, 214, 181, 255);
     } else {
-      return Color.fromARGB(255, 214, 181, 255);
+      return const Color.fromARGB(255, 214, 181, 255);
     }
   }
 
   String _getStatusText(DateTime date) {
     DateTime now = DateTime.now();
-    DateTime tomorrow = now.add(Duration(days: 1));
+    DateTime tomorrow = now.add(const Duration(days: 1));
 
     if (date.year == now.year && date.month == now.month && date.day == now.day) {
       return 'Сегодня';
@@ -75,7 +75,7 @@ class NearestEntry extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8), // Добавляем отступ между строкой с названием и строкой со статусом
+                      const SizedBox(height: 8), // отступ между строкой с названием и строкой со статусом
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -129,13 +129,14 @@ class NearestEntry extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8), // Добавляем отступ между строкой со статусом и строкой с тренером
+                      const SizedBox(height: 8), // отступ между строкой со статусом и строкой с тренером
                       Row(
                         children: [
                           CircleAvatar(
+                            radius: 24,
                             backgroundImage: NetworkImage(state.item.trainerPhotoUrl),
                           ),
-                          const SizedBox(width: 12), // Отступ между картинкой и текстом
+                          const SizedBox(width: 12), // между картинкой и текстом
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -167,7 +168,7 @@ class NearestEntry extends StatelessWidget {
               ),
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

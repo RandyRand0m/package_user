@@ -11,3 +11,6 @@ export 'src/widgets/nearest_entry.dart';
 export 'src/widgets/nearest_entry_empty.dart';
 export 'src/widgets/MyCalendar.dart';
 export 'src/widgets/MyCalendar_month.dart';
+export 'src/widgets/barcodepage.dart';
+//export 'src/widgets/barcodepage_refresh.dart';
+export 'src/widgets/barcodepage_empty.dart';

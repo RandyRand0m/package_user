@@ -12,6 +12,24 @@ class BarcodeGeneratorPage extends StatefulWidget {
   _BarcodeGeneratorPageState createState() => _BarcodeGeneratorPageState();
 }
 
+ void _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.7, // Высота экрана 70%
+          color: Color.fromARGB(255, 214, 181, 255),
+          child: Center(
+            child: Text(
+              '',
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 class _BarcodeGeneratorPageState extends State<BarcodeGeneratorPage> {
   late String barcodeType;
   late String barcodeValue;
@@ -53,7 +71,7 @@ class _BarcodeGeneratorPageState extends State<BarcodeGeneratorPage> {
             padding: EdgeInsets.all(16.0),
             child: Text(
               'Invalid barcode type',
-              style: TextStyle(color: Colors.red, fontSize: 24),
+              
             ),
           ),
         ),
@@ -123,29 +141,36 @@ class ClubCard extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 214, 181, 255),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              padding: EdgeInsets.all(8.0),
-              child: const Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Клубная карта',
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ),
+            GestureDetector(
+                onTap: () {
+                  _showModalBottomSheet(context); 
+                },
+                child: Container(
+                  width: double.infinity, 
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 214, 181, 255),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  SizedBox(width: 20),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 18,
-                    color: Colors.black,
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Клубная карта',
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                        color: Colors.black,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
           ],
         ),
       ),

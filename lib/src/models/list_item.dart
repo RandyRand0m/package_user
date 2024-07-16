@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-class ListItem extends Equatable {
+class ListItem {
   final int gtoId;
   final String dayOfWeek;
   final String date;
@@ -31,11 +31,12 @@ class ListItem extends Equatable {
       timeStart: json['timeStart'],
       name: json['name'],
       coachName: json['coach_name'],
-      trainerPhotoUrl: json['trainerPhotoUrl'] ?? '', // assuming default empty URL if not provided
+      trainerPhotoUrl: json['trainer_photo_url'] ?? '',
       duration: json['duration'],
-      status: json['spots']['current_spots'] > 0, // assuming status based on current spots
+      status: true,
     );
   }
+  
 
   String get endTime {
     final startTime = DateTime.parse(date).add(Duration(hours: int.parse(timeStart.split(":")[0]), minutes: int.parse(timeStart.split(":")[1])));

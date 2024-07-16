@@ -3,29 +3,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_user/package_user.dart';
 
-void main() {
-  final apiService = ApiService('https://teg2.gymatech.store');
-  runApp(MyApp(apiService: apiService));
-}
-
-class MyApp extends StatelessWidget {
-  final ApiService apiService;
-
-  const MyApp({Key? key, required this.apiService}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('ListItem'),
-        ),
-        body: MyCalendar_month(apiService: apiService),
-      ),
-    );
-  }
-}
-
 class MyCalendar_month extends StatefulWidget {
   final ApiService apiService;
 

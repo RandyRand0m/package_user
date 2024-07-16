@@ -70,6 +70,21 @@ class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> {
   }
 }
 
+ void _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.7, 
+          color: Color.fromARGB(255, 214, 181, 255),
+          child: Center(
+            
+          ),
+        );
+      },
+    );
+  }
+
 class ClubCard extends StatelessWidget {
   final String barcodeSvg;
   final String cardNumber;
@@ -85,66 +100,68 @@ class ClubCard extends StatelessWidget {
       ),
       margin: EdgeInsets.all(0),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(6.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 200,
+              width: double.infinity,
               height: 80,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
               ),
               padding: EdgeInsets.all(8.0),
-              child: Center(
-                child: Icon(
-                  Icons.refresh,
-                  size: 40,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.0),
-                
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Клубная карта',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 214, 181, 255),
-                      borderRadius: BorderRadius.circular(10.0),
-                      
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                    child: Text(
-                      cardNumber,
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                    ),
-                  ),
-                  SizedBox(width: 10),
                   Icon(
-                    Icons.arrow_forward_ios,
-                    size: 18,
+                    Icons.refresh,
+                    size: 25,
                     color: Colors.black,
+                  ),
+                  SizedBox(height: 8), // Отступ между иконкой и текстом
+                  Text(
+                    'Что-то пошло не так',
+                    style: TextStyle(fontSize: 14, color: Colors.black),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+            SizedBox(height: 20),
+            GestureDetector(
+                onTap: () {
+                  _showModalBottomSheet(context); 
+                },
+                child: Container(
+                  width: double.infinity, 
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 214, 181, 255),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Клубная карта',
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                        color: Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      );
   }
 }

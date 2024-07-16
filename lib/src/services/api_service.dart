@@ -8,27 +8,25 @@ class ApiService {
   ApiService(this.baseUrl);
 
   Future<List<ListItem>> fetchListItems() async {
-    final response = await http.get(Uri.parse('$baseUrl/test/group_training_object/2'));
+    final response = await http.get(Uri.parse('$baseUrl/test/group_training_object/0'));
 
     if (response.statusCode == 200) {
-      // Декодируем тело ответа с явной указкой на кодировку UTF-8
       final Map<String, dynamic> data = json.decode(utf8.decode(response.bodyBytes));
       List<ListItem> items = [];
-      data.forEach((time, activities) {
-        for (var activity in activities) {
-          items.add(ListItem(
-            gtoId: activity['gto_id'],
-            dayOfWeek: activity['day_of_week'],
-            date: activity['data'],
-            timeStart: activity['timeStart'],
-            name: activity['name'],
-            coachName: activity['coach_name'],
-            trainerPhotoUrl: '', // Добавьте это поле в ваш JSON или установите значение по умолчанию
-            duration: activity['duration'],
-            status: true, // Установите это значение на основе вашей логики
-          ));
+
+      data.forEach((key, value) {
+        if (value is Map<String, dynamic>) {
+          value.forEach((time, activities) {
+            if (activities is List) {
+              for (var activity in activities) {
+                items.add(ListItem.fromJson(activity));
+              }
+            }
+          });
         }
       });
+
+      print('Fetched items: ${items.length}');
       return items;
     } else {
       throw Exception('Failed to load list items');

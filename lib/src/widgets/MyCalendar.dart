@@ -360,6 +360,7 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:package_user/package_user.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../services/api_service.dart';
@@ -367,6 +368,7 @@ import '../models/list_item.dart';
 import '../widgets/list_item_widget.dart';
 import '../cubit/list_item_cubit.dart';
 import '../widgets/nearest_entry.dart';
+import '../widgets/nearest_entry_empty.dart';
 
 class MyCalendar extends StatefulWidget {
   final ApiService apiService;
@@ -650,6 +652,8 @@ class _MyCalendarState extends State<MyCalendar> {
             children: [
               ListItemWidget(item: daySchedule[index]),
               NearestEntry(item: daySchedule[index]),
+              const NearestEntryPlaceholder(),
+              const ListItemSkeleton(),
             ],
           ),
         );
