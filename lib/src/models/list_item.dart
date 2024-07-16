@@ -23,6 +23,20 @@ class ListItem extends Equatable {
     required this.status,
   });
 
+  factory ListItem.fromJson(Map<String, dynamic> json) {
+    return ListItem(
+      gtoId: json['gto_id'],
+      dayOfWeek: json['day_of_week'],
+      date: json['data'],
+      timeStart: json['timeStart'],
+      name: json['name'],
+      coachName: json['coach_name'],
+      trainerPhotoUrl: json['trainerPhotoUrl'] ?? '', // assuming default empty URL if not provided
+      duration: json['duration'],
+      status: json['spots']['current_spots'] > 0, // assuming status based on current spots
+    );
+  }
+
   String get endTime {
     final startTime = DateTime.parse(date).add(Duration(hours: int.parse(timeStart.split(":")[0]), minutes: int.parse(timeStart.split(":")[1])));
     final endTime = startTime.add(Duration(minutes: duration));

@@ -3,18 +3,48 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_user/package_user.dart';
 
-class MyCalendar_month extends StatefulWidget {
-  final List<ListItem> listItems;
-
-  const MyCalendar_month({super.key, required this.listItems});
-
-  @override
-  _MyCalendarState createState() => _MyCalendarState();
+void main() {
+  final apiService = ApiService('https://teg2.gymatech.store');
+  runApp(MyApp(apiService: apiService));
 }
 
-class _MyCalendarState extends State<MyCalendar_month> {
+class MyApp extends StatelessWidget {
+  final ApiService apiService;
+
+  const MyApp({Key? key, required this.apiService}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('ListItem'),
+        ),
+        body: MyCalendar_month(apiService: apiService),
+      ),
+    );
+  }
+}
+
+class MyCalendar_month extends StatefulWidget {
+  final ApiService apiService;
+
+  const MyCalendar_month({super.key, required this.apiService});
+
+  @override
+  _MyCalendar_monthState createState() => _MyCalendar_monthState();
+}
+
+class _MyCalendar_monthState extends State<MyCalendar_month> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay = DateTime.now();
+  late Future<List<ListItem>> _listItemsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _listItemsFuture = widget.apiService.fetchListItems();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,20 +88,33 @@ class _MyCalendarState extends State<MyCalendar_month> {
         ),
         const SizedBox(height: 8.0),
         Expanded(
-          child: _buildScheduleForSelectedDay(),
+          child: FutureBuilder<List<ListItem>>(
+            future: _listItemsFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return Center(child: Text('Нет данных'));
+              } else {
+                return _buildScheduleForSelectedDay(snapshot.data!);
+              }
+            },
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildScheduleForSelectedDay() {
+  Widget _buildScheduleForSelectedDay(List<ListItem> listItems) {
     if (_selectedDay == null) {
       return const Center(
         child: Text('Выберите день для просмотра расписания'),
       );
     }
 
-    final daySchedule = widget.listItems
+    final daySchedule = listItems
         .where((item) => isSameDay(DateTime.parse(item.date), _selectedDay!))
         .toList();
 

@@ -18,7 +18,7 @@ class NearestEntry extends StatelessWidget {
     if (status == 'Сегодня' || status == 'Завтра') {
       return Color.fromARGB(255, 214, 181, 255);
     } else {
-      return Colors.transparent;
+      return Color.fromARGB(255, 214, 181, 255);
     }
   }
 

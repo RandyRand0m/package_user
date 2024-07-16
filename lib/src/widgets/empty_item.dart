@@ -43,7 +43,7 @@ class ListItemSkeleton extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 8), // Добавляем отступ между строкой с названием и строкой с тренером
+              SizedBox(height: 8),
               Row(
                 children: [
                   CircleAvatar(
