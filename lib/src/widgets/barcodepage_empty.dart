@@ -16,7 +16,7 @@ class ClubCardSkeleton extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 244, 234, 255),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               padding: EdgeInsets.all(8.0),
@@ -26,24 +26,24 @@ class ClubCardSkeleton extends StatelessWidget {
             SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 214, 181, 255),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               width: double.infinity,
               child: Row(
-                mainAxisSize: MainAxisSize.max,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 214, 181, 255),
+                      color: Color.fromARGB(255, 244, 234, 255),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     height: 20,
                     width: 90,
                   ),
-                  SizedBox(width: 10),
+                  Spacer(),
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 18,

@@ -13,7 +13,7 @@ class ListItemSkeleton extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: const Color.fromARGB(0, 0, 0, 0), width: 1),
-            color: Color.fromARGB(255, 255, 255, 255),
+            color: Color.fromARGB(2255, 244, 234, 255),
           ),
           padding: EdgeInsets.all(8),
           child: Column(
@@ -28,7 +28,7 @@ class ListItemSkeleton extends StatelessWidget {
                       width: 150,
                       height: 22,
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 241, 237, 245),
+                        color: const Color.fromARGB(255, 244, 234, 255),
                         borderRadius: BorderRadius.circular(21),
                       ),
                     ),
@@ -47,7 +47,7 @@ class ListItemSkeleton extends StatelessWidget {
               Row(
                 children: [
                   const CircleAvatar(
-                    backgroundColor: Color.fromARGB(255, 241, 237, 245),
+                    backgroundColor: Color.fromARGB(255, 244, 234, 255),
                     radius: 24,
                   ),
                   SizedBox(width: 12), // Отступ между картинкой и текстом
@@ -58,7 +58,7 @@ class ListItemSkeleton extends StatelessWidget {
                         width: 100,
                         height: 16,
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 241, 237, 245),
+                          color: const Color.fromARGB(255, 244, 234, 255),
                           borderRadius: BorderRadius.circular(21),
                         ),
                       ),

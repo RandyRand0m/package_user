@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_user/package_user.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import '../services/api_service.dart';
-// import '../models/list_item.dart';
-// import '../widgets/list_item_widget.dart';
-// import '../cubit/list_item_cubit.dart';
-// import '../widgets/nearest_entry.dart';
-// import '../widgets/nearest_entry_empty.dart';
+
 
 class MyCalendar extends StatefulWidget {
   final ApiService apiService;
@@ -137,6 +132,7 @@ class _MyCalendarState extends State<MyCalendar> {
               return _getRussianWeekday(date.weekday);
             },
           ),
+          //Не выбранный день
           calendarBuilders: CalendarBuilders(
             defaultBuilder: (context, date, _) {
               bool isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
@@ -177,6 +173,7 @@ class _MyCalendarState extends State<MyCalendar> {
                 ),
               );
             },
+            //Сегодняшний день
             todayBuilder: (context, date, _) {
               bool isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
               return SizedBox(
@@ -216,6 +213,7 @@ class _MyCalendarState extends State<MyCalendar> {
                 ),
               );
             },
+            //выбранный день
             selectedBuilder: (context, date, _) {
               bool isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
               return SizedBox(

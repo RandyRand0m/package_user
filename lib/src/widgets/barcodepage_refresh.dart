@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:barcode/barcode.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
-
 
 class BarcodeRefreshPage extends StatefulWidget {
   final String jsonData;
@@ -13,7 +11,7 @@ class BarcodeRefreshPage extends StatefulWidget {
   _BarcodeRefreshPageState createState() => _BarcodeRefreshPageState();
 }
 
-class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> with SingleTickerProviderStateMixin  {
+class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> with SingleTickerProviderStateMixin {
   late String barcodeType;
   late String barcodeValue;
   late String cardNumber;
@@ -25,35 +23,45 @@ class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> with SingleTick
     super.initState();
     _loadCardData(widget.jsonData);
     _controller = AnimationController(
-        duration: const Duration(seconds: 1),
-        vsync: this,
-      )..repeat();
-      
-      _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
   }
-  
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
+
   void _loadCardData(String jsonData) {
     Map<String, dynamic> cardData = jsonDecode(jsonData);
     setState(() {
       barcodeType = cardData['type'];
       barcodeValue = cardData['value'];
       cardNumber = cardData['number'];
-    }
-    );
-  }
-  
-  void _refreshData() {
-    setState(() { 
-      _controller.forward(from: 0);
-      _loadCardData(widget.jsonData);
     });
   }
 
+  void _refreshData() {
+    _controller.reset(); // Сбрасываем анимацию в начальное состояние
+    _controller.forward(); // Запускаем анимацию заново
+    _loadCardData(widget.jsonData);
+  }
+
+  void _showModalBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.7,
+          color: const Color.fromARGB(255, 214, 181, 255),
+          child: const Center(),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +94,7 @@ class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> with SingleTick
             barcodeSvg: barcodeSvg,
             cardNumber: cardNumber,
             onRefresh: _refreshData,
+            onShowModal: () => _showModalBottomSheet(context),
             animation: _animation,
           ),
         ),
@@ -94,32 +103,20 @@ class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> with SingleTick
   }
 }
 
- void _showModalBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.7, 
-          color: const Color.fromARGB(255, 214, 181, 255),
-          child: const Center(
-            
-          ),
-        );
-      },
-    );
-  }
-
 class ClubCard extends StatelessWidget {
   final String barcodeSvg;
   final String cardNumber;
   final VoidCallback onRefresh;
+  final VoidCallback onShowModal;
   final Animation<double> animation;
+
   ClubCard({
-    required this.barcodeSvg, 
+    required this.barcodeSvg,
     required this.cardNumber,
     required this.onRefresh,
+    required this.onShowModal,
     required this.animation,
-    });
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +135,7 @@ class ClubCard extends StatelessWidget {
               width: double.infinity,
               height: 80,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.fromARGB(255, 244, 234, 255),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               padding: EdgeInsets.all(8.0),
@@ -166,38 +163,36 @@ class ClubCard extends StatelessWidget {
             ),
             SizedBox(height: 20),
             GestureDetector(
-                onTap: () {
-                  _showModalBottomSheet(context); 
-                },
-                child: Container(
-                  width: double.infinity, 
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 214, 181, 255),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Клубная карта',
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                        ),
+              onTap: onShowModal,
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 214, 181, 255),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Клубная карта',
+                        style: TextStyle(fontSize: 18, color: Colors.black),
                       ),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 18,
-                        color: Colors.black,
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 18,
+                      color: Colors.black,
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        )
-      );
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
