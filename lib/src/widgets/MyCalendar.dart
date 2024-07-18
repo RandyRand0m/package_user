@@ -1,374 +1,13 @@
-// import 'package:flutter/material.dart';
-// import 'package:table_calendar/table_calendar.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:package_user/package_user.dart';
-
-// class MyCalendar extends StatefulWidget {
-//   final List<ListItem> listItems;
-
-//   const MyCalendar({super.key, required this.listItems});
-
-//   @override
-//   _MyCalendarState createState() => _MyCalendarState();
-// }
-
-// class _MyCalendarState extends State<MyCalendar> {
-//   DateTime _focusedDay = DateTime.now();
-//   DateTime? _selectedDay = DateTime.now();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         TableCalendar(
-//           firstDay: DateTime.utc(2024, 1, 1),
-//           lastDay: DateTime.utc(2030, 12, 31),
-//           focusedDay: _focusedDay,
-//           selectedDayPredicate: (day) {
-//             return isSameDay(_selectedDay, day);
-//           },
-//           onDaySelected: (selectedDay, focusedDay) {
-//             setState(() {
-//               _selectedDay = DateTime.utc(2024, 1, 1);
-//               _focusedDay = focusedDay;
-//             });
-
-//             Future.delayed(const Duration(milliseconds: 50), () {
-//               setState(() {
-//                 _selectedDay = selectedDay;
-//               });
-//             });
-//           },
-//           calendarFormat: CalendarFormat.week,
-//           startingDayOfWeek: StartingDayOfWeek.monday,
-//           headerStyle: const HeaderStyle(
-//             formatButtonVisible: false,
-//             titleCentered: true,
-//           ),
-//           calendarStyle: const CalendarStyle(
-//             selectedDecoration: BoxDecoration(
-//               color: Color.fromARGB(255, 186, 135, 252),
-//               shape: BoxShape.circle,
-//             ),
-//             todayDecoration: BoxDecoration(
-//               color: Color.fromRGBO(204, 204, 204, 1),
-//               shape: BoxShape.circle,
-//             ),
-//           ),
-//         ),
-//         const SizedBox(height: 8.0),
-//         Expanded(
-//           child: _buildScheduleForSelectedDay(),
-//         ),
-//       ],
-//     );
-//   }
-
-//   Widget _buildScheduleForSelectedDay() {
-//     if (_selectedDay == null) {
-//       return const Center(
-//         child: Text('Выберите день для просмотра расписания'),
-//       );
-//     }
-
-//     final daySchedule = widget.listItems
-//         .where((item) => isSameDay(DateTime.parse(item.date), _selectedDay!))
-//         .toList();
-
-//     if (daySchedule.isEmpty) {
-//       return const Center(
-//         child: Text('Нет расписания для выбранного дня'),
-//       );
-//     }
-
-//     return ListView.builder(
-//       itemCount: daySchedule.length,
-//       itemBuilder: (context, index) {
-//         return BlocProvider(
-//           create: (context) => ListItemCubit()..loadListItem(daySchedule[index]),
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               ListItemWidget(item: daySchedule[index]),
-//               NearestEntry(item: daySchedule[index]),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
-// import 'package:flutter/material.dart';
-// import 'package:table_calendar/table_calendar.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import '../services/api_service.dart';
-// import '../models/list_item.dart';
-// import '../widgets/list_item_widget.dart';
-// import '../cubit/list_item_cubit.dart';
-// import '../widgets/nearest_entry.dart';
-
-// class MyCalendar extends StatefulWidget {
-//   final ApiService apiService;
-
-//   const MyCalendar({super.key, required this.apiService});
-
-//   @override
-//   _MyCalendarState createState() => _MyCalendarState();
-// }
-
-// class _MyCalendarState extends State<MyCalendar> {
-//   DateTime _focusedDay = DateTime.now();
-//   DateTime? _selectedDay = DateTime.now();
-//   List<ListItem> _listItems = [];
-//   bool _isLoading = true;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _fetchListItems();
-//   }
-
-//   Future<void> _fetchListItems() async {
-//     try {
-//       final items = await widget.apiService.fetchListItems();
-//       setState(() {
-//         _listItems = items;
-//         _isLoading = false;
-//       });
-//     } catch (e) {
-//       setState(() {
-//         _isLoading = false;
-//       });
-//       print('Failed to load list items: $e');
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         TableCalendar(
-//           firstDay: DateTime.utc(2024, 1, 1),
-//           lastDay: DateTime.utc(2030, 12, 31),
-//           focusedDay: _focusedDay,
-//           selectedDayPredicate: (day) {
-//             return isSameDay(_selectedDay, day);
-//           },
-//           onDaySelected: (selectedDay, focusedDay) {
-//             setState(() {
-//               _selectedDay = DateTime.utc(2024, 1, 1);
-//               _focusedDay = focusedDay;
-//             });
-
-//             Future.delayed(const Duration(milliseconds: 50), () {
-//               setState(() {
-//                 _selectedDay = selectedDay;
-//               });
-//             });
-//           },
-//           calendarFormat: CalendarFormat.week,
-//           startingDayOfWeek: StartingDayOfWeek.monday,
-//           headerStyle: const HeaderStyle(
-//             formatButtonVisible: false,
-//             titleCentered: true,
-//           ),
-//           calendarStyle: const CalendarStyle(
-//             selectedDecoration: BoxDecoration(
-//               color: Color.fromARGB(255, 186, 135, 252),
-//               shape: BoxShape.circle,
-//             ),
-//             todayDecoration: BoxDecoration(
-//               color: Color.fromRGBO(204, 204, 204, 1),
-//               shape: BoxShape.circle,
-//             ),
-//           ),
-//         ),
-//         const SizedBox(height: 8.0),
-//         _isLoading
-//             ? Center(child: CircularProgressIndicator())
-//             : Expanded(
-//                 child: _buildScheduleForSelectedDay(),
-//               ),
-//       ],
-//     );
-//   }
-
-//   Widget _buildScheduleForSelectedDay() {
-//     if (_selectedDay == null) {
-//       return const Center(
-//         child: Text('Выберите день для просмотра расписания'),
-//       );
-//     }
-
-//     final daySchedule = _listItems
-//         .where((item) => isSameDay(DateTime.parse(item.date), _selectedDay!))
-//         .toList();
-
-//     if (daySchedule.isEmpty) {
-//       return const Center(
-//         child: Text('Нет расписания для выбранного дня'),
-//       );
-//     }
-
-//     return ListView.builder(
-//       itemCount: daySchedule.length,
-//       itemBuilder: (context, index) {
-//         return BlocProvider(
-//           create: (context) => ListItemCubit()..loadListItem(daySchedule[index]),
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               ListItemWidget(item: daySchedule[index]),
-//               NearestEntry(item: daySchedule[index]),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
-// import 'package:flutter/material.dart';
-// import 'package:table_calendar/table_calendar.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import '../services/api_service.dart';
-// import '../models/list_item.dart';
-// import '../widgets/list_item_widget.dart';
-// import '../cubit/list_item_cubit.dart';
-// import '../widgets/nearest_entry.dart';
-
-// class MyCalendar extends StatefulWidget {
-//   final ApiService apiService;
-
-//   const MyCalendar({super.key, required this.apiService});
-
-//   @override
-//   _MyCalendarState createState() => _MyCalendarState();
-// }
-
-// class _MyCalendarState extends State<MyCalendar> {
-//   DateTime _focusedDay = DateTime.now();
-//   DateTime? _selectedDay = DateTime.now();
-//   List<ListItem> _listItems = [];
-//   bool _isLoading = true;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _fetchListItems();
-//   }
-
-//   Future<void> _fetchListItems() async {
-//     try {
-//       final items = await widget.apiService.fetchListItems();
-//       setState(() {
-//         _listItems = items;
-//         _isLoading = false;
-//       });
-//     } catch (e) {
-//       setState(() {
-//         _isLoading = false;
-//       });
-//       print('Failed to load list items: $e');
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         TableCalendar(
-//           firstDay: DateTime.utc(2024, 1, 1),
-//           lastDay: DateTime.utc(2030, 12, 31),
-//           focusedDay: _focusedDay,
-//           selectedDayPredicate: (day) {
-//             return isSameDay(_selectedDay, day);
-//           },
-//           onDaySelected: (selectedDay, focusedDay) {
-//             setState(() {
-//               _selectedDay = DateTime.utc(2024, 1, 1);
-//               _focusedDay = focusedDay;
-//             });
-
-//             Future.delayed(const Duration(milliseconds: 50), () {
-//               setState(() {
-//                 _selectedDay = selectedDay;
-//               });
-//             });
-//           },
-//           calendarFormat: CalendarFormat.week,
-//           startingDayOfWeek: StartingDayOfWeek.monday,
-//           headerStyle: const HeaderStyle(
-//             formatButtonVisible: false,
-//             titleCentered: true,
-//           ),
-//           calendarStyle: const CalendarStyle(
-//             selectedDecoration: BoxDecoration(
-//               color: Color.fromARGB(255, 186, 135, 252),
-//               shape: BoxShape.circle,
-//             ),
-//             todayDecoration: BoxDecoration(
-//               color: Color.fromRGBO(204, 204, 204, 1),
-//               shape: BoxShape.circle,
-//             ),
-//           ),
-//         ),
-//         const SizedBox(height: 8.0),
-//         _isLoading
-//             ? const Center(child: CircularProgressIndicator())
-//             : Expanded(
-//                 child: _buildScheduleForSelectedDay(),
-//               ),
-//       ],
-//     );
-//   }
-
-//   Widget _buildScheduleForSelectedDay() {
-//     if (_selectedDay == null) {
-//       return const Center(
-//         child: Text('Выберите день для просмотра расписания'),
-//       );
-//     }
-
-//     final daySchedule = _listItems
-//         .where((item) => isSameDay(DateTime.parse(item.date), _selectedDay!))
-//         .toList();
-
-//     if (daySchedule.isEmpty) {
-//       return const Center(
-//         child: Text('Нет расписания для выбранного дня'),
-//       );
-//     }
-
-//     return ListView.builder(
-//       itemCount: daySchedule.length,
-//       itemBuilder: (context, index) {
-//         return BlocProvider(
-//           create: (context) => ListItemCubit()..loadListItem(daySchedule[index]),
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               ListItemWidget(item: daySchedule[index]),
-//               NearestEntry(item: daySchedule[index]),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:package_user/package_user.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../services/api_service.dart';
-import '../models/list_item.dart';
-import '../widgets/list_item_widget.dart';
-import '../cubit/list_item_cubit.dart';
-import '../widgets/nearest_entry.dart';
-import '../widgets/nearest_entry_empty.dart';
+// import '../services/api_service.dart';
+// import '../models/list_item.dart';
+// import '../widgets/list_item_widget.dart';
+// import '../cubit/list_item_cubit.dart';
+// import '../widgets/nearest_entry.dart';
+// import '../widgets/nearest_entry_empty.dart';
 
 class MyCalendar extends StatefulWidget {
   final ApiService apiService;
@@ -463,6 +102,7 @@ class _MyCalendarState extends State<MyCalendar> {
     return Column(
       children: [
         TableCalendar(
+          rowHeight: 70.0,
           firstDay: DateTime.utc(2024, 1, 1),
           lastDay: DateTime.utc(2030, 12, 31),
           focusedDay: _focusedDay,
@@ -500,116 +140,118 @@ class _MyCalendarState extends State<MyCalendar> {
           calendarBuilders: CalendarBuilders(
             defaultBuilder: (context, date, _) {
               bool isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
-              return Container(
-                
-                alignment: Alignment.center,
-                width: 41, // фиксированная ширина
-                height: 67, // фиксированная высота
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 218, 208, 227),
-                  
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 28,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        
+              return SizedBox(
+                width: 41,
+                height: 65,
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 218, 208, 227),
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${_getRussianWeekday(date.weekday)}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
                       ),
-                      child: Center(
-                        child: Text(
-                          '${date.day}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromARGB(255, 218, 208, 227),
+                        ),
+                        child: Center(
+                          child: Text(
+                            '${date.day}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      '${_getRussianWeekday(date.weekday)}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
             todayBuilder: (context, date, _) {
               bool isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
-              return Container(
-                
-                alignment: Alignment.center,
-                width: 41, // фиксированная ширина
-                height: 67, // фиксированная высота
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 218, 208, 227),
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 28,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        
+              return SizedBox(
+                width: 41,
+                height: 65,
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 214, 181, 255),
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${_getRussianWeekday(date.weekday)}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
                       ),
-                      child: Center(
-                        child: Text(
-                          '${date.day}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromARGB(255, 214, 181, 255)
+                        ),
+                        child: Center(
+                          child: Text(
+                            '${date.day}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      '${_getRussianWeekday(date.weekday)}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
             selectedBuilder: (context, date, _) {
               bool isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
-              return Container(
-                alignment: Alignment.center,
-                width: 41, // фиксированная ширина
-                height: 67, // фиксированная высота
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 186, 135, 252),
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 28,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 214, 181, 255),
-                        shape: BoxShape.circle,
-                      
+              return SizedBox(
+                width: 41,
+                height: 65,
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 186, 135, 252),
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${_getRussianWeekday(date.weekday)}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
                       ),
-                      child: Center(
-                        child: Text(
-                          '${date.day}',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: isWeekend ? Colors.black.withOpacity(1.0) : Colors.black),
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromARGB(255, 214, 181, 255)
+                        ),
+                        child: Center(
+                          child: Text(
+                            '${date.day}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                          ),
                         ),
                       ),
-                    ),
-                    Text(
-                      '${_getRussianWeekday(date.weekday)}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },

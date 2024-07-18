@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ClubCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,11 +8,11 @@ class ClubCardSkeleton extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      margin: EdgeInsets.all(0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch, 
           children: [
             Container(
               decoration: BoxDecoration(
@@ -22,7 +21,7 @@ class ClubCardSkeleton extends StatelessWidget {
               ),
               padding: EdgeInsets.all(8.0),
               height: 80,
-              width: 200,
+              width: double.infinity, 
             ),
             SizedBox(height: 20),
             Container(
@@ -31,8 +30,9 @@ class ClubCardSkeleton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              width: double.infinity,
               child: Row(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
                     decoration: BoxDecoration(
@@ -41,7 +41,7 @@ class ClubCardSkeleton extends StatelessWidget {
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     height: 20,
-                    width: 90, 
+                    width: 90,
                   ),
                   SizedBox(width: 10),
                   Icon(

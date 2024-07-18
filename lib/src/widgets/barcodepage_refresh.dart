@@ -13,25 +13,47 @@ class BarcodeRefreshPage extends StatefulWidget {
   _BarcodeRefreshPageState createState() => _BarcodeRefreshPageState();
 }
 
-class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> {
+class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> with SingleTickerProviderStateMixin  {
   late String barcodeType;
   late String barcodeValue;
   late String cardNumber;
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     _loadCardData(widget.jsonData);
+    _controller = AnimationController(
+        duration: const Duration(seconds: 1),
+        vsync: this,
+      )..repeat();
+      
+      _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
   }
-
+  
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
   void _loadCardData(String jsonData) {
     Map<String, dynamic> cardData = jsonDecode(jsonData);
     setState(() {
       barcodeType = cardData['type'];
       barcodeValue = cardData['value'];
       cardNumber = cardData['number'];
+    }
+    );
+  }
+  
+  void _refreshData() {
+    setState(() { 
+      _controller.forward(from: 0);
+      _loadCardData(widget.jsonData);
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +85,8 @@ class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> {
           child: ClubCard(
             barcodeSvg: barcodeSvg,
             cardNumber: cardNumber,
+            onRefresh: _refreshData,
+            animation: _animation,
           ),
         ),
       ),
@@ -76,8 +100,8 @@ class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> {
       builder: (BuildContext context) {
         return Container(
           height: MediaQuery.of(context).size.height * 0.7, 
-          color: Color.fromARGB(255, 214, 181, 255),
-          child: Center(
+          color: const Color.fromARGB(255, 214, 181, 255),
+          child: const Center(
             
           ),
         );
@@ -88,8 +112,14 @@ class _BarcodeRefreshPageState extends State<BarcodeRefreshPage> {
 class ClubCard extends StatelessWidget {
   final String barcodeSvg;
   final String cardNumber;
-
-  ClubCard({required this.barcodeSvg, required this.cardNumber});
+  final VoidCallback onRefresh;
+  final Animation<double> animation;
+  ClubCard({
+    required this.barcodeSvg, 
+    required this.cardNumber,
+    required this.onRefresh,
+    required this.animation,
+    });
 
   @override
   Widget build(BuildContext context) {
@@ -115,13 +145,19 @@ class ClubCard extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.refresh,
-                    size: 25,
-                    color: Colors.black,
+                  GestureDetector(
+                    onTap: onRefresh,
+                    child: RotationTransition(
+                      turns: animation,
+                      child: const Icon(
+                        Icons.refresh,
+                        size: 25,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                   SizedBox(height: 8), // Отступ между иконкой и текстом
-                  Text(
+                  const Text(
                     'Что-то пошло не так',
                     style: TextStyle(fontSize: 14, color: Colors.black),
                   ),
@@ -140,7 +176,7 @@ class ClubCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(

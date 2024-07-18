@@ -1,6 +1,6 @@
 name: package_user
 description: A Flutter package providing a customizable list item widget with detailed information.
-version: 0.0.9
+version: 0.0.10
 homepage: https://github.com/RandyRand0m/package_user
 repository: https://github.com/RandyRand0m/package_user
 issue_tracker: https://github.com/RandyRand0m/package_user/issues

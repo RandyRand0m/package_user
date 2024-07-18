@@ -17,9 +17,9 @@ class BarcodeGeneratorPage extends StatefulWidget {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.7, // Высота экрана 70%
-          color: Color.fromARGB(255, 214, 181, 255),
-          child: Center(
+          height: MediaQuery.of(context).size.height * 0.7, // Высота экрана
+          color: const Color.fromARGB(255, 214, 181, 255),
+          child: const Center(
             child: Text(
               '',
               style: TextStyle(fontSize: 24),
@@ -152,7 +152,7 @@ class ClubCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
