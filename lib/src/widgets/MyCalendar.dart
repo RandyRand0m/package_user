@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:package_user/package_user.dart';
+import 'package:package_user/src/widgets/typedef.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class MyCalendar extends StatefulWidget {
   final ApiService apiService;
+  final GtoPageBuilder gtoPageBuilder;
 
-  const MyCalendar({super.key, required this.apiService});
+  const MyCalendar(
+      {super.key, required this.apiService, required this.gtoPageBuilder});
 
   @override
   _MyCalendarState createState() => _MyCalendarState();
@@ -135,7 +137,8 @@ class _MyCalendarState extends State<MyCalendar> {
           //Не выбранный день
           calendarBuilders: CalendarBuilders(
             defaultBuilder: (context, date, _) {
-              bool isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
+              bool isWeekend = date.weekday == DateTime.saturday ||
+                  date.weekday == DateTime.sunday;
               return SizedBox(
                 width: 41,
                 height: 65,
@@ -151,7 +154,10 @@ class _MyCalendarState extends State<MyCalendar> {
                       Text(
                         '${_getRussianWeekday(date.weekday)}',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                        style: TextStyle(
+                            color: isWeekend
+                                ? Colors.black.withOpacity(0.4)
+                                : Colors.black),
                       ),
                       Container(
                         width: 28,
@@ -164,7 +170,10 @@ class _MyCalendarState extends State<MyCalendar> {
                           child: Text(
                             '${date.day}',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                            style: TextStyle(
+                                color: isWeekend
+                                    ? Colors.black.withOpacity(0.4)
+                                    : Colors.black),
                           ),
                         ),
                       ),
@@ -175,7 +184,8 @@ class _MyCalendarState extends State<MyCalendar> {
             },
             //Сегодняшний день
             todayBuilder: (context, date, _) {
-              bool isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
+              bool isWeekend = date.weekday == DateTime.saturday ||
+                  date.weekday == DateTime.sunday;
               return SizedBox(
                 width: 41,
                 height: 65,
@@ -191,20 +201,25 @@ class _MyCalendarState extends State<MyCalendar> {
                       Text(
                         '${_getRussianWeekday(date.weekday)}',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                        style: TextStyle(
+                            color: isWeekend
+                                ? Colors.black.withOpacity(0.4)
+                                : Colors.black),
                       ),
                       Container(
                         width: 28,
                         height: 28,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromARGB(255, 214, 181, 255)
-                        ),
+                            shape: BoxShape.circle,
+                            color: Color.fromARGB(255, 214, 181, 255)),
                         child: Center(
                           child: Text(
                             '${date.day}',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                            style: TextStyle(
+                                color: isWeekend
+                                    ? Colors.black.withOpacity(0.4)
+                                    : Colors.black),
                           ),
                         ),
                       ),
@@ -215,7 +230,8 @@ class _MyCalendarState extends State<MyCalendar> {
             },
             //выбранный день
             selectedBuilder: (context, date, _) {
-              bool isWeekend = date.weekday == DateTime.saturday || date.weekday == DateTime.sunday;
+              bool isWeekend = date.weekday == DateTime.saturday ||
+                  date.weekday == DateTime.sunday;
               return SizedBox(
                 width: 41,
                 height: 65,
@@ -231,20 +247,25 @@ class _MyCalendarState extends State<MyCalendar> {
                       Text(
                         '${_getRussianWeekday(date.weekday)}',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                        style: TextStyle(
+                            color: isWeekend
+                                ? Colors.black.withOpacity(0.4)
+                                : Colors.black),
                       ),
                       Container(
                         width: 28,
                         height: 28,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromARGB(255, 214, 181, 255)
-                        ),
+                            shape: BoxShape.circle,
+                            color: Color.fromARGB(255, 214, 181, 255)),
                         child: Center(
                           child: Text(
                             '${date.day}',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: isWeekend ? Colors.black.withOpacity(0.4) : Colors.black),
+                            style: TextStyle(
+                                color: isWeekend
+                                    ? Colors.black.withOpacity(0.4)
+                                    : Colors.black),
                           ),
                         ),
                       ),
@@ -286,14 +307,15 @@ class _MyCalendarState extends State<MyCalendar> {
       itemCount: daySchedule.length,
       itemBuilder: (context, index) {
         return BlocProvider(
-          create: (context) => ListItemCubit()..loadListItem(daySchedule[index]),
+          create: (context) =>
+              ListItemCubit()..loadListItem(daySchedule[index]),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ListItemWidget(item: daySchedule[index]),
-              NearestEntry(item: daySchedule[index]),
-              const NearestEntryPlaceholder(),
-              const ListItemSkeleton(),
+              ListItemWidget(
+                item: daySchedule[index],
+                gtoPageBuilder: widget.gtoPageBuilder,
+              ),
             ],
           ),
         );

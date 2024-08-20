@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:package_user/src/widgets/typedef.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:package_user/package_user.dart';
 
 class MyCalendar_month extends StatefulWidget {
   final ApiService apiService;
+  final GtoPageBuilder gtoPageBuilder;
 
-  const MyCalendar_month({super.key, required this.apiService});
+  const MyCalendar_month(
+      {super.key, required this.apiService, required this.gtoPageBuilder});
 
   @override
   _MyCalendar_monthState createState() => _MyCalendar_monthState();
@@ -105,11 +108,15 @@ class _MyCalendar_monthState extends State<MyCalendar_month> {
       itemCount: daySchedule.length,
       itemBuilder: (context, index) {
         return BlocProvider(
-          create: (context) => ListItemCubit()..loadListItem(daySchedule[index]),
+          create: (context) =>
+              ListItemCubit()..loadListItem(daySchedule[index]),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ListItemWidget(item: daySchedule[index]),
+              ListItemWidget(
+                item: daySchedule[index],
+                gtoPageBuilder: widget.gtoPageBuilder,
+              ),
               NearestEntry(item: daySchedule[index]),
             ],
           ),

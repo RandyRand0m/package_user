@@ -1,3 +1,5 @@
+import 'package:package_user/src/models/spots.dart';
+
 class ListItem {
   final int gtoId;
   final String dayOfWeek;
@@ -8,6 +10,7 @@ class ListItem {
   final String trainerPhotoUrl;
   final int duration;
   final bool status;
+  final Spots spots;
 
   ListItem({
     required this.gtoId,
@@ -19,6 +22,7 @@ class ListItem {
     required this.trainerPhotoUrl,
     required this.duration,
     required this.status,
+    required this.spots,
   });
 
   factory ListItem.fromJson(Map<String, dynamic> json) {
@@ -32,12 +36,15 @@ class ListItem {
       trainerPhotoUrl: json['trainer_photo_url'] ?? '',
       duration: json['duration'],
       status: true,
+      spots: Spots.fromJson(json['spots']),
     );
   }
-  
+
   //Время окончания занятия
   String get endTime {
-    final startTime = DateTime.parse(date).add(Duration(hours: int.parse(timeStart.split(":")[0]), minutes: int.parse(timeStart.split(":")[1])));
+    final startTime = DateTime.parse(date).add(Duration(
+        hours: int.parse(timeStart.split(":")[0]),
+        minutes: int.parse(timeStart.split(":")[1])));
     final endTime = startTime.add(Duration(minutes: duration));
     return '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}';
   }
@@ -52,18 +59,19 @@ class ListItem {
     String? trainerPhotoUrl,
     int? duration,
     bool? status,
+    Spots? spots,
   }) {
     return ListItem(
-      gtoId: gtoId ?? this.gtoId,
-      dayOfWeek: dayOfWeek ?? this.dayOfWeek,
-      date: date ?? this.date,
-      timeStart: timeStart ?? this.timeStart,
-      name: name ?? this.name,
-      coachName: coachName ?? this.coachName,
-      trainerPhotoUrl: trainerPhotoUrl ?? this.trainerPhotoUrl,
-      duration: duration ?? this.duration,
-      status: status ?? this.status,
-    );
+        gtoId: gtoId ?? this.gtoId,
+        dayOfWeek: dayOfWeek ?? this.dayOfWeek,
+        date: date ?? this.date,
+        timeStart: timeStart ?? this.timeStart,
+        name: name ?? this.name,
+        coachName: coachName ?? this.coachName,
+        trainerPhotoUrl: trainerPhotoUrl ?? this.trainerPhotoUrl,
+        duration: duration ?? this.duration,
+        status: status ?? this.status,
+        spots: spots ?? this.spots);
   }
 
   @override
@@ -78,5 +86,6 @@ class ListItem {
         trainerPhotoUrl,
         duration,
         status,
+        spots,
       ];
 }

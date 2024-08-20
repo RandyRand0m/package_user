@@ -8,7 +8,8 @@ class ApiService {
   ApiService(this.baseUrl);
 
   Future<List<ListItem>> fetchListItems() async {
-    final response = await http.get(Uri.parse('$baseUrl/test/group_training_object/1'));
+    final response =
+        await http.get(Uri.parse('$baseUrl/test/group_training_object/1'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body) as Map<String, dynamic>;
